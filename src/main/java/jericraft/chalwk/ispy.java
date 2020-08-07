@@ -15,21 +15,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ispy extends JavaPlugin {
     protected ispyFiles logger = null;
-    public HashMap<Player, Integer> iSpyEnabled = new HashMap();
+    //public HashMap<Player, Integer> iSpyEnabled = new HashMap();
+    public HashMap<CommandSender, String> iSpyEnabled = new HashMap();
+
 
     public void onEnable() {
         this.logger = new ispyFiles();
         this.getServer().getPluginManager().registerEvents(new ispyPlayers(this), this);
         new ispyPlayers(this);
         this.saveDefaultConfig();
-
-        final String enable = this.getConfig().getString("OnPluginEnable");
-        System.out.println(enable);
-    }
-
-    public void onDisable() {
-        final String disable = this.getConfig().getString("OnPluginDisable");
-        System.out.println(disable);
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -57,29 +51,24 @@ public class ispy extends JavaPlugin {
                             this.reloadConfig();
 
                         } else if (args[0].equalsIgnoreCase("enable")) {
-
-                            // Check if iSpy is already enabled:
-                            if (this.iSpyEnabled.containsKey(sender)) {
+                            String state = iSpyEnabled.get(sender);
+                            if (state != "enabled") {
+                                iSpyEnabled.put(sender, "enabled");
+                                String msg = this.getConfig().getString("onEnable");
+                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", prefix, msg)));
+                            } else {
                                 String msg = this.getConfig().getString("alreadyEnabled");
                                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", prefix, msg)));
-
-                            } else {
-                                // Enable iSpy:
-                                this.iSpyEnabled.remove(sender);
-                                String msg = this.getConfig().getString("MessagesEnabled");
-                                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", prefix, msg)));
                             }
+
                         } else if (args[0].equalsIgnoreCase("disable")) {
-
-                            // Check if iSpy is already disabled:
-                            if (this.iSpyEnabled.containsKey(sender)) {
-                                String msg = this.getConfig().getString("alreadyDisabled");
+                            String state = iSpyEnabled.get(sender);
+                            if (state != "disabled") {
+                                iSpyEnabled.put(sender, "disabled");
+                                String msg = this.getConfig().getString("onDisable");
                                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", prefix, msg)));
-
                             } else {
-                                // Disable iSpy:
-                                this.iSpyEnabled.put((Player) sender, null);
-                                String msg = this.getConfig().getString("MessagesDisabled");
+                                String msg = this.getConfig().getString("alreadyDisabled");
                                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("%s%s", prefix, msg)));
                             }
 
