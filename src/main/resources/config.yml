@@ -30,14 +30,13 @@ HelpAllow: '&3/ispy allow &7- enable/disable log messages in chat'
 ReloadPlugin: '&7Reload successful!'
 
 # /ispy enable/disable
-onEnable: '[iSpy] is now enabled for you!'
-onDisable: '[iSpy] is now disabled for you!'
-alreadyEnabled: '[iSpy] is already enabled.'
-alreadyDiabled: '[iSpy] is already disabled.'
+onEnable: ' is now enabled for you!'
+onDisable: ' is now disabled for you!'
+alreadyEnabled: ' is already enabled.'
+alreadyDisabled: ' is already disabled.'
 
 MessagesDisabled: '&7Logging is disabled!'
 MessagesEnabled: '&7Logging is enabled!'
-
 
 
 OnPluginEnable: '[iSpy] Enabling iSpy'
